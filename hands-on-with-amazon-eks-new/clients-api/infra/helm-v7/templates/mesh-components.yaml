@@ -1,0 +1,72 @@
+---
+apiVersion: appmesh.k8s.aws/v1beta2
+kind: VirtualNode
+metadata:
+  name: {{ template "acg-clients-api.name" . }}
+  namespace: {{ .Release.Namespace }}
+spec:
+  podSelector:
+    matchLabels:
+      app: {{ template "acg-clients-api.name" . }}
+      release: {{ .Release.Name }}
+  listeners:
+    - portMapping:
+        port: {{ .Values.service.containerPort }}
+        protocol: http
+  logging:
+    accessLog:
+      file:
+        path: "/tmp/stdout"
+  serviceDiscovery:
+    dns:
+      hostname: {{ .Values.service.name }}
+
+---
+apiVersion: appmesh.k8s.aws/v1beta2
+kind: VirtualService
+metadata:
+  name: {{ .Values.service.name }}
+  namespace: {{ .Release.Namespace }}
+spec:
+  awsName: {{ .Values.service.name }}
+  provider:
+    virtualRouter:
+      virtualRouterRef:
+        name: {{ template "acg-clients-api.name" . }}-virtual-router
+
+--- 
+apiVersion: appmesh.k8s.aws/v1beta2
+kind: VirtualRouter
+metadata:
+  name: {{ template "acg-clients-api.name" . }}-virtual-router
+  namespace: {{ .Release.Namespace }}
+spec:
+  listeners:
+    - portMapping:
+        port: {{ .Values.service.containerPort }}
+        protocol: http
+  routes:
+    - name: {{ template "acg-clients-api.name" . }}-route
+      httpRoute:
+        match:
+          prefix: /
+        action:
+          weightedTargets:
+            - virtualNodeRef:
+                name: {{ template "acg-clients-api.name" . }}
+              weight: 1
+        retryPolicy:
+          maxRetries: 10
+          perRetryTimeout:
+            unit: ms
+            value: 2000
+          httpRetryEvents:
+            - server-error
+            - gateway-error
+            - stream-error
+          tcpRetryEvents:
+            - connection-error
+        timeout:
+          perRequest:
+            value: 30
+            unit: s
