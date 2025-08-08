@@ -5,24 +5,24 @@ terraform {
       version = "~> 6.0"
     }
     
-    randon = { 
+    random = { 
       source = "hashicorp/random"
-      version = "~>3.4.3"
+      version = "~> 3.4.3"
     }
 
     tls = {
       source = "hashicorp/tls"
-      version = "~>4.0.4"
+      version = "~> 4.0.4"
     }
 
     cloudinit = {
       source = "hashicorp/cloudinit"
-      version = "~>2.2.0"
+      version = "~> 2.2.0"
     }
 
    kubernetes = {
       source = "hashicorp/kubernetes"
-      version = "~>2.30"
+      version = "~> 2.30"
     }
   }
   required_version = "~> 1.3"

@@ -25,3 +25,10 @@ Initializing kubectl on EKS:
 aws eks update-kubeconfig --name cluster-name --region us-east-1
 
 kubectl -n kube-system get configmap aws-auth -o yaml
+
+## Create Infrastructure with yaml files
+
+This is CloudGuru yaml file 
+
+1- Directory [here](Infrastructure/eksctl/01-initial-cluster) file cluster.yaml
+eksctl create cluster -f cluster.yaml

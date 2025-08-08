@@ -3,7 +3,7 @@ provider "aws" {
 }
 
 resource "aws_s3_bucket" "tf_state" {
-  bucket = "marcos-terraform-state-590184064814"   # replace with your unique name
+  bucket = "marcos-terraform-state-533266962445"   # replace with your unique name
   acl    = "private"
 
   versioning {
