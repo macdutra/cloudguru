@@ -14,7 +14,7 @@ This solution has been built for for explaining all the concepts in this course.
 
 I started to use terraform as IAC for my environments. Enjoy!! :)
 
-> You can find in [here] (terraform) directory files.
+> You can find in [here](terraform) terraform directory files.
 
 Change bootstrap-terraform directory
 Change terraform files
