@@ -17,9 +17,11 @@ I started to use terraform as IAC for my environments. Enjoy!! :)
 > You can find in [here](terraform) terraform directory files.
 
 Change bootstrap-terraform directory
+
 Change terraform files
 
 Initializing kubectl on EKS:
 
 aws eks update-kubeconfig --name cluster-name --region us-east-1
+
 kubectl -n kube-system get configmap aws-auth -o yaml
