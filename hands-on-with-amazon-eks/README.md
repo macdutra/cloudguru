@@ -62,4 +62,5 @@ spec:
   ingressClassName: alb
   {{- end }}
   
-
+I fixed ALB iam policy [here](Infrastructure/k8s-tooling/load-balancer-controller) file iam-policy.yaml
+Add - elasticloadbalancing:DescribeListenerAttributes
