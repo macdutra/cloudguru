@@ -4,10 +4,7 @@ metadata:
   name: services-ingress
   namespace: {{ .Release.Namespace }}
   annotations:
-    {{- if semverCompare ">=1.18-0" .Capabilities.KubeVersion.GitVersion }}
-    # For backwards compatibility with pre-1.18 clusters
     kubernetes.io/ingress.class: alb
-    {{- end }}
     alb.ingress.kubernetes.io/group.name: my-group
     alb.ingress.kubernetes.io/scheme: internet-facing
 {{- if not .Values.ssl.enabled }}
@@ -19,9 +16,6 @@ metadata:
   labels:
     app: nginx
 spec:
-  {{- if semverCompare ">=1.18-0" .Capabilities.KubeVersion.GitVersion }}
-  ingressClassName: alb
-  {{- end }}
   rules:
     - http:
         paths:

@@ -16,5 +16,9 @@ nodeGroups:
     desiredCapacity: 3
     privateNetworking: true
     volumeSize: 30
+    # Specify Amazon Linux 2023 AMI
+    amiFamily: AmazonLinux2023
+    # Optional: specify exact AMI if needed
+    # ami: ami-xxxxxxxxx
 
 availabilityZones: ["us-east-1a", "us-east-1b", "us-east-1c"] # This is required since in us-east-1 only 2 subnets are created by default (https://eksctl.io/usage/vpc-networking/)
