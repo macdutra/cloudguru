@@ -31,12 +31,11 @@ kubectl -n kube-system get configmap aws-auth -o yaml
 This is CloudGuru yaml file 
 
 Don't forget to export AWS variables:
-
+```
 export AWS_ACCESS_KEY_ID
-
 export AWS_SECRET_ACCESS_KEY
-
 export AWS_REGION
+```
 
 1- Directory [here](Infrastructure/eksctl/01-initial-cluster) file cluster.yaml
 
