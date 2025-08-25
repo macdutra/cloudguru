@@ -31,27 +31,36 @@ kubectl -n kube-system get configmap aws-auth -o yaml
 This is CloudGuru yaml file 
 
 Don't forget to export AWS variables:
+
 export AWS_ACCESS_KEY_ID
+
 export AWS_SECRET_ACCESS_KEY
+
 export AWS_REGION
 
 1- Directory [here](Infrastructure/eksctl/01-initial-cluster) file cluster.yaml
+
 eksctl create cluster -f cluster.yaml
 
 2- Configure application LoadBalancer [here](Infrastructure/k8s-tooling/load-balancer-controller) file create.sh
+
 ./create.sh
 
 After creation, there is one more step, attach iam-policy to the nodes that was created by cloudformation via create.sh.
 
 Name of IAM Policy: cloudformation -> stacks -> aws-load-balancer-iam-policy -> outputs -> value arn.
+
 Attach policy: cloudformation -> stacks -> eksctl-eks-acg-nodegroup-eks-node-group - resources -> NodeInstanceRole -> PhysicalID (role)
+
 On role: Attach the name of policy.
 
 3- Test [here](Infrastructure/k8s-tooling/load-balancer-controller/test) file run.sh - Create sample app via helm chat and creating loadbacing for the app.
+
 ./run.sh
 
 I fixed the annotation file templates/ingress.yaml
-  annotations:
+```  
+annotations:
     {{- if semverCompare ">=1.18-0" .Capabilities.KubeVersion.GitVersion }}
     # For backwards compatibility with pre-1.18 clusters
     kubernetes.io/ingress.class: alb
@@ -61,6 +70,8 @@ spec:
   {{- if semverCompare ">=1.18-0" .Capabilities.KubeVersion.GitVersion }}
   ingressClassName: alb
   {{- end }}
+```
   
 I fixed ALB iam policy [here](Infrastructure/k8s-tooling/load-balancer-controller) file iam-policy.yaml
+
 Add - elasticloadbalancing:DescribeListenerAttributes
