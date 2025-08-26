@@ -4,7 +4,7 @@ metadata:
   name: services-ingress
   namespace: {{ .Release.Namespace }}
   annotations:
-    {{- if semverCompare ">=1.18-0" .Capabilities.KubeVersion.GitVersion }}
+    {{- if semverCompare "<1.18-0" .Capabilities.KubeVersion.GitVersion }}
     # For backwards compatibility with pre-1.18 clusters
     kubernetes.io/ingress.class: alb
     {{- end }}
