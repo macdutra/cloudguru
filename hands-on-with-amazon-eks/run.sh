@@ -17,4 +17,4 @@ echo "Deploy ssl app..."
 
 echo "Install external dns..."
 cd ../../external-dns
-./run.sh
+./create.sh
