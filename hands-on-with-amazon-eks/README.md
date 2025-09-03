@@ -83,4 +83,26 @@ Add - elasticloadbalancing:DescribeListenerAttributes
 
 5- Test ssl [here](Infrastructure/k8s-tooling/load-balancer-controller/test) file run-with-ssl.sh - Deploy sample app via helm chart with ssl and update loadbalancer to open port 443 SSL and redirect port 80 to 443.
 
-```./run-with-ssl-sh```
+```./run-with-ssl.sh```
+
+6- Install external dns [here](Infrastructure/k8s-tooling/external-dns) file create.sh via helm.
+
+```./create.sh``` 
+
+Add route53fullaccess to this policy cloudformation -> stacks -> eksctl-eks-acg-nodegroup-eks-node-group - resources -> NodeInstanceRole -> PhysicalID (role)
+
+Delete the record to the load balancer.
+
+Delete the pod externaldns
+```
+kubectl get pods
+kubectl delete pod externaldns_name
+``` 
+
+After pod recreation automatically externaldns recreate the record on route53.
+
+*Problem*
+
+I create values.yaml to create a aws default region.
+
+
