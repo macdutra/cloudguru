@@ -105,4 +105,48 @@ After pod recreation automatically externaldns recreate the record on route53.
 
 I create values.yaml to create a aws default region.
 
+7- Create dynamodb tables for bookstore app.
 
+7.1- clients-api dynamodb [here](clients-api/infra/cloudformation)
+
+```./create-dynamodb-table.sh development```
+
+7.2- inventory-api dynamodb [here](inventory-api/infra/cloudformation)
+
+```./create-dynamodb-table.sh development```
+
+7.3- renting-api dynamodb [here](renting-api/infra/cloudformation)
+
+```./create-dynamodb-table.sh development```
+
+7.4- resource-api dynamodb [here](resource-api/infra/cloudformation)
+
+```./create-dynamodb-table.sh development```
+
+After creation, I need to put dynamodb permission on worker nodes. The tutorial added dynamodb full access, I don't like this, I will change it after.
+
+7.5- dynamodb permission [here](marcos_scripts)
+
+```./dynamodb_permission.sh``` 
+
+8- Install helm for bookstore app
+
+8.1- clients-api helm [here](clients-api/infra/helm)
+
+```./create.sh``` 
+
+8.2- inventory-api helm [here](inventory-api/infra/helm)
+
+```./create.sh``` 
+
+8.3- renting-api helm [here](renting-api/infra/helm)
+
+```./create.sh``` 
+
+8.4- resource-api helm [here](resource-api/infra/helm)
+
+```./create.sh``` 
+
+8.5- front-end helm [here](front-end/infra/helm)
+
+```./create.sh``` 
