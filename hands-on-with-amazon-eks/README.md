@@ -150,3 +150,42 @@ After creation, I need to put dynamodb permission on worker nodes. The tutorial 
 8.5- front-end helm [here](front-end/infra/helm)
 
 ```./create.sh``` 
+
+9- Setup second CIDR on VPC using CNI [here](Infrastructure/k8s-tooling/cni)
+
+```./setup.sh```
+
+cd helm
+
+```create.sh```
+
+After that, I need to delete the ec2 instances to get the new configuration:
+
+```
+kubectl get nodes
+kubectl cordon ip-10-0-125-13.ec2.internal
+kubectl drain ip-10-0-125-13.ec2.internal \
+  --ignore-daemonsets \
+  --force \
+  --grace-period=30 \
+  --delete-emptydir-data
+```
+
+Delete the instance in aws ec2 console.
+
+10- Associate OIDC in Kubernetes
+
+```eksctl utils associate-iam-oidc-provider --cluster=eks-acg --approve```
+
+11- Create IAM policy
+
+11.1- clients-api policy [here](clients-api/infra/cloudformation)
+
+```
+./create-iam-policy.sh
+cd ../helm-v2
+./create.sh
+
+```
+
+

@@ -10,18 +10,16 @@ metadata:
     {{- end }}
     alb.ingress.kubernetes.io/group.name: my-group
     alb.ingress.kubernetes.io/scheme: internet-facing
-{{- if not .Values.ssl.enabled }}
+    {{- if not .Values.ssl.enabled }}
     alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}]'
-{{- else }}
+    {{- else }}
     alb.ingress.kubernetes.io/ssl-redirect: '443'
     alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}, {"HTTPS": 443}]'
-{{- end }}
+    {{- end }}
   labels:
     app: nginx
 spec:
-  {{- if semverCompare ">=1.18-0" .Capabilities.KubeVersion.GitVersion }}
   ingressClassName: alb
-  {{- end }}
   rules:
     - http:
         paths:
@@ -32,6 +30,4 @@ spec:
                 name: nginx-service
                 port: 
                   number: 80
-{{- if .Values.ssl.enabled }}
       host: sample-app.{{ .Values.baseDomain }}
-{{- end }}
