@@ -3,11 +3,11 @@
     {
       "Action": "UPSERT",
       "ResourceRecordSet": {
-        "Name": "sample-app.992382411773.realhandsonlabs.net",
+        "Name": "sample-app.851725449231.realhandsonlabs.net",
         "Type": "A",
         "AliasTarget": {
-          "HostedZoneId": "",
-          "DNSName": "<none>",
+          "HostedZoneId": "Z35SXDOTRQ7X7K",
+          "DNSName": "k8s-mygroup-ed0cc739cc-460430373.us-east-1.elb.amazonaws.com",
           "EvaluateTargetHealth": false
         }
       }

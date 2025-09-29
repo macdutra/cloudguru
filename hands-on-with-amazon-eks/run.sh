@@ -1,5 +1,8 @@
 #!/bin/sh
 
+start=$(date +%s)
+echo "Starting script at $(date)"
+
 internal_api=(clients-api inventory-api renting-api resource-api)
 front_internal_api=(clients-api inventory-api renting-api resource-api front-end)
 aws_export=(AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY AWS_REGION)
@@ -117,5 +120,10 @@ for i in "${k8s_services[@]}"; do
   cd ../../../
 done
 
+
+echo "Finished script at $(date)"
+end=$(date +%s)
+runtime=$((end-start))
+echo "Total time executing the script $ seconds"
 
 
