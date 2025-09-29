@@ -37,11 +37,11 @@ export AWS_SECRET_ACCESS_KEY
 export AWS_REGION
 ```
 
-1- Directory [here](Infrastructure/eksctl/01-initial-cluster) file cluster.yaml
+1.1- Directory [here](Infrastructure/eksctl/01-initial-cluster) file cluster.yaml
 
 ```eksctl create cluster -f cluster.yaml```
 
-2- Configure application LoadBalancer [here](Infrastructure/k8s-tooling/load-balancer-controller) file create.sh
+2.1- Configure application LoadBalancer [here](Infrastructure/k8s-tooling/load-balancer-controller) file create.sh
 
 ```./create.sh```
 
@@ -55,7 +55,7 @@ Attach policy: cloudformation -> stacks -> eksctl-eks-acg-nodegroup-eks-node-gro
 On role: Attach the name of policy.
 ```
 
-3- Test [here](Infrastructure/k8s-tooling/load-balancer-controller/test) file run.sh - Deploy sample app via helm chat and creating loadbacing for the app.
+2.2- Test [here](Infrastructure/k8s-tooling/load-balancer-controller/test) file run.sh - Deploy sample app via helm chat and creating loadbacing for the app.
 
 ```./run.sh```
 
@@ -77,15 +77,15 @@ I fixed ALB iam policy [here](Infrastructure/k8s-tooling/load-balancer-controlle
 
 Add - elasticloadbalancing:DescribeListenerAttributes
 
-4- Create SSL certificate [here](Infrastructure/cloudformation/ssl-certificate) file create.sh - Verify domain in route53 and create the ssl certificate in AWS ACM.
+2.3- Create SSL certificate [here](Infrastructure/cloudformation/ssl-certificate) file create.sh - Verify domain in route53 and create the ssl certificate in AWS ACM.
 
 ```./create.sh```
 
-5- Test ssl [here](Infrastructure/k8s-tooling/load-balancer-controller/test) file run-with-ssl.sh - Deploy sample app via helm chart with ssl and update loadbalancer to open port 443 SSL and redirect port 80 to 443.
+2.4- Test ssl [here](Infrastructure/k8s-tooling/load-balancer-controller/test) file run-with-ssl.sh - Deploy sample app via helm chart with ssl and update loadbalancer to open port 443 SSL and redirect port 80 to 443.
 
 ```./run-with-ssl.sh```
 
-6- Install external dns [here](Infrastructure/k8s-tooling/external-dns) file create.sh via helm.
+2.5- Install external dns [here](Infrastructure/k8s-tooling/external-dns) file create.sh via helm.
 
 ```./create.sh``` 
 
@@ -105,53 +105,64 @@ After pod recreation automatically externaldns recreate the record on route53.
 
 I create values.yaml to create a aws default region.
 
-7- Create dynamodb tables for bookstore app.
+2.6- Create dynamodb tables for bookstore app.
 
-7.1- clients-api dynamodb [here](clients-api/infra/cloudformation)
-
-```./create-dynamodb-table.sh development```
-
-7.2- inventory-api dynamodb [here](inventory-api/infra/cloudformation)
+2.6.1- clients-api dynamodb [here](clients-api/infra/cloudformation)
 
 ```./create-dynamodb-table.sh development```
 
-7.3- renting-api dynamodb [here](renting-api/infra/cloudformation)
+2.6.2- inventory-api dynamodb [here](inventory-api/infra/cloudformation)
 
 ```./create-dynamodb-table.sh development```
 
-7.4- resource-api dynamodb [here](resource-api/infra/cloudformation)
+2.6.3- renting-api dynamodb [here](renting-api/infra/cloudformation)
+
+```./create-dynamodb-table.sh development```
+
+2.6.4- resource-api dynamodb [here](resource-api/infra/cloudformation)
 
 ```./create-dynamodb-table.sh development```
 
 After creation, I need to put dynamodb permission on worker nodes. The tutorial added dynamodb full access, I don't like this, I will change it after.
 
-7.5- dynamodb permission [here](marcos_scripts)
+2.7- dynamodb permission [here](marcos_scripts)
 
 ```./dynamodb_permission.sh``` 
 
-8- Install helm for bookstore app
+Test the bookstore frontend.
 
-8.1- clients-api helm [here](clients-api/infra/helm)
+```
+kubectl get ingress -A
 
-```./create.sh``` 
+Verify the endpoint with ping.
+Verify route53 entry
+Verify externaldns - kubectl get pods
+Verify logs - kubectl logs external-dns-serviceID
+```
 
-8.2- inventory-api helm [here](inventory-api/infra/helm)
+2.8- Install helm for bookstore app
 
-```./create.sh``` 
-
-8.3- renting-api helm [here](renting-api/infra/helm)
-
-```./create.sh``` 
-
-8.4- resource-api helm [here](resource-api/infra/helm)
-
-```./create.sh``` 
-
-8.5- front-end helm [here](front-end/infra/helm)
+2.8.1- clients-api helm [here](clients-api/infra/helm)
 
 ```./create.sh``` 
 
-9- Setup second CIDR on VPC using CNI [here](Infrastructure/k8s-tooling/cni)
+2.8.2- inventory-api helm [here](inventory-api/infra/helm)
+
+```./create.sh``` 
+
+2.8.3- renting-api helm [here](renting-api/infra/helm)
+
+```./create.sh``` 
+
+2.8.4- resource-api helm [here](resource-api/infra/helm)
+
+```./create.sh``` 
+
+2.8.5- front-end helm [here](front-end/infra/helm)
+
+```./create.sh``` 
+
+2.9- Setup second CIDR on VPC using CNI [here](Infrastructure/k8s-tooling/cni)
 
 ```./setup.sh```
 
@@ -173,13 +184,13 @@ kubectl drain ip-10-0-125-13.ec2.internal \
 
 Delete the instance in aws ec2 console.
 
-10- Associate OIDC in Kubernetes
+3.1- Associate OIDC in Kubernetes
 
 ```eksctl utils associate-iam-oidc-provider --cluster=eks-acg --approve```
 
-11- Create IAM policy
+3.2- Create IAM policy
 
-11.1- clients-api policy [here](clients-api/infra/cloudformation)
+3.2.1- clients-api policy [here](clients-api/infra/cloudformation)
 
 ```
 ./create-iam-policy.sh
@@ -188,4 +199,65 @@ cd ../helm-v2
 
 ```
 
+3.2.2- inventory-api policy [here](inventory-api/infra/cloudformation)
+
+```
+./create-iam-policy.sh
+cd ../helm-v2
+./create.sh
+
+```
+
+3.2.3- renting-api policy [here](renting-api/infra/cloudformation)
+
+```
+./create-iam-policy.sh
+cd ../helm-v2
+./create.sh
+
+```
+
+3.2.4- resource-api policy [here](resource-api/infra/cloudformation)
+
+```
+./create-iam-policy.sh
+cd ../helm-v2
+./create.sh
+
+```
+
+3.3- IRSA for load balancers/external-dns/CNI
+3.3.1- Remove roles from eks nodes
+```
+Add route53fullaccess to this policy cloudformation -> stacks -> eksctl-eks-acg-nodegroup-eks-node-group - resources -> NodeInstanceRole -> PhysicalID (role)
+Remove the policies: load_balancer_iam - Route53FullAccess - EKS_CNI_Policy
+```
+
+3.3.2- Creating IRSA for load balancer [here](Infrastructure/k8s-tooling/load-balancer-controller)
+```
+helm ls -n kube-system
+helm delete -n kube-system aws-load-balancer-controller
+./create-irsa.sh
+Verify the pod
+kubectl get pod -n kube-system (Get aws-load-balancer-controller name)
+kubectl describe pod -n kube-system aws-load-balancer-controller
+```
+
+3.3.3- Creating IRSA for external-dns [here](Infrastructure/k8s-tooling/external-dns)
+```
+helm ls
+helm delete external-dns
+./create-irsa.sh
+Verify the pod
+kubectl get pod (Get external-dns name)
+kubectl describe pod external-dns
+```
+
+3.3.4- Creating IRSA for CNI [here](Infrastructure/k8s-tooling/cni)
+```
+./create-irsa.sh
+Verify the nodes
+kubectl get pod -n kube-system (Get aws-load-balancer-controller name)
+kubectl describe pod -n kube-system aws-load-balancer-controller
+```
 
