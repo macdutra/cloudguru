@@ -120,6 +120,14 @@ for i in "${k8s_services[@]}"; do
   cd ../../../
 done
 
+echo "Verifying the nodegroup..."
+eksctl get nodegroups --cluster eks-acg
+
+echo "Create nodegroup with spot instances..."
+cd Infrastructure/eksctl/02-spot-instances
+eksctl create nodegroup -f cluster.yaml
+cd ../../../
+
 
 echo "Finished script at $(date)"
 end=$(date +%s)

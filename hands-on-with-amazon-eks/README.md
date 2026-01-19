@@ -261,3 +261,12 @@ kubectl get pod -n kube-system (Get aws-load-balancer-controller name)
 kubectl describe pod -n kube-system aws-load-balancer-controller
 ```
 
+4- Spot instances [here](Infrastructure/eksctl/02-spot-instances)
+Verifying the nodegroup and create nodegroup
+```
+eksctl get nodegroups --cluster eks-acg
+eksctl create nodegroup -f cluster.yaml
+```
+
+
+
